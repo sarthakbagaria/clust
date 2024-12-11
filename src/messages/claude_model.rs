@@ -18,11 +18,14 @@ pub enum ClaudeModel {
     // Claude 3.5 Sonnet
     /// Claude 3.5 Sonnet at 2024/06/20
     Claude35Sonnet20240620,
+    // Claude 3.5 Sonnet
+    /// Claude 3.5 Sonnet at 2024/10/22
+    Claude35Sonnet20241022
 }
 
 impl Default for ClaudeModel {
     fn default() -> Self {
-        Self::Claude3Sonnet20240229
+        Self::Claude35Sonnet20241022
     }
 }
 
@@ -44,6 +47,9 @@ impl Display for ClaudeModel {
             | ClaudeModel::Claude35Sonnet20240620 => {
                 write!(f, "claude-3-5-sonnet-20240620")
             },
+            | ClaudeModel::Claude35Sonnet20241022 => {
+                write!(f, "claude-3-5-sonnet-20241022")
+            },
         }
     }
 }
@@ -55,6 +61,7 @@ impl ClaudeModel {
             | ClaudeModel::Claude3Sonnet20240229 => 4096,
             | ClaudeModel::Claude3Haiku20240307 => 4096,
             | ClaudeModel::Claude35Sonnet20240620 => 4096,
+            | ClaudeModel::Claude35Sonnet20241022 => 8192,
         }
     }
 }
@@ -64,7 +71,8 @@ impl_enum_string_serialization!(
     Claude3Opus20240229 => "claude-3-opus-20240229",
     Claude3Sonnet20240229 => "claude-3-sonnet-20240229",
     Claude3Haiku20240307 => "claude-3-haiku-20240307",
-    Claude35Sonnet20240620 => "claude-3-5-sonnet-20240620"
+    Claude35Sonnet20240620 => "claude-3-5-sonnet-20240620",
+    Claude35Sonnet20241022 => "claude-3-5-sonnet-20241022"
 );
 
 #[cfg(test)]
@@ -75,7 +83,7 @@ mod tests {
     fn default() {
         assert_eq!(
             ClaudeModel::default(),
-            ClaudeModel::Claude3Sonnet20240229
+            ClaudeModel::Claude35Sonnet20241022
         );
     }
 
@@ -97,6 +105,10 @@ mod tests {
             ClaudeModel::Claude35Sonnet20240620.to_string(),
             "claude-3-5-sonnet-20240620"
         );
+        assert_eq!(
+            ClaudeModel::Claude35Sonnet20241022.to_string(),
+            "claude-3-5-sonnet-20241022"
+        );
     }
 
     #[test]
@@ -116,6 +128,10 @@ mod tests {
         assert_eq!(
             ClaudeModel::Claude35Sonnet20240620.max_tokens(),
             4096
+        );
+        assert_eq!(
+            ClaudeModel::Claude35Sonnet20241022.max_tokens(),
+            8192
         );
     }
 
@@ -143,6 +159,13 @@ mod tests {
             .unwrap(),
             ClaudeModel::Claude35Sonnet20240620
         );
+        assert_eq!(
+            serde_json::from_str::<ClaudeModel>(
+                "\"claude-3-5-sonnet-20241022\""
+            )
+            .unwrap(),
+            ClaudeModel::Claude35Sonnet20241022
+        );
     }
 
     #[test]
@@ -163,6 +186,11 @@ mod tests {
             serde_json::to_string(&ClaudeModel::Claude35Sonnet20240620)
                 .unwrap(),
             "\"claude-3-5-sonnet-20240620\""
+        );
+        assert_eq!(
+            serde_json::to_string(&ClaudeModel::Claude35Sonnet20241022)
+                .unwrap(),
+            "\"claude-3-5-sonnet-20241022\""
         );
     }
 }

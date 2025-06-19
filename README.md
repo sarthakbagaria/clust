@@ -33,8 +33,7 @@ clust = "0.9.0"
 
 ### API key and client
 
-First you need to create a new API client: `clust::Client` with your Anthropic API key from environment variable: "
-ANTHROPIC_API_KEY"
+First you need to create a new API client: `clust::Client` with your Anthropic API key from environment variable: `ANTHROPIC_API_KEY`.
 
 ```rust,no_run
 use clust::Client;
@@ -424,7 +423,7 @@ use clust::messages::Message;
 use clust::messages::MessagesRequestBody;
 use clust::messages::SystemPrompt;
 use clust::messages::StreamOption;
-use clust::messages::StreamChunk;
+use clust::messages::MessageChunk;
 use clust::Client;
 
 use tokio_stream::StreamExt;
@@ -464,7 +463,7 @@ async fn main() -> anyhow::Result<()> {
             | Ok(chunk) => {
                 println!("Chunk:\n{}", chunk);
                 match chunk {
-                    | StreamChunk::ContentBlockDelta(content_block_delta) => {
+                    | MessageChunk::ContentBlockDelta(content_block_delta) => {
                         // Buffer message delta.
                         buffer.push_str(&content_block_delta.delta.text);
                     }
